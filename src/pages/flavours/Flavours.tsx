@@ -103,6 +103,42 @@ export default function Flavours() {
     setflavourId(pizzaFlavour[0].id)
   }, [])
 
+  const navigate = useNavigate();
+  const { pizzaSize, pizzaFlavour, setPizzaFlavour } = useContext(OrderContext);
+  const [selectedFlavours, setSelectedFlavours] = useState([]);
+
+  const flavoursOptions = [
+    
+  ];
+
+  const handleFlavourSelection = (id) => {
+    const flavour = getPizzaFlavour(id);
+
+   
+    const isFlavourSelected = selectedFlavours.some((f) => f.id === id);
+
+    if (!isFlavourSelected && selectedFlavours.length < 2) {
+
+      setSelectedFlavours([...selectedFlavours, flavour]);
+    } else if (isFlavourSelected) {
+
+      setSelectedFlavours(selectedFlavours.filter((f) => f.id !== id));
+    }
+  };
+
+  const handleBack = () => {
+    navigate(routes.pizzaSize);
+  };
+
+  const handleNext = () => {
+    if (selectedFlavours.length === 2) {
+      setPizzaFlavour(selectedFlavours);
+      navigate(routes.summary);
+    } else {
+      alert("Por favor, selecione dois sabores para a pizza.");
+    }
+  };
+
   return (
     <Layout>
       <Title tabIndex={0}>Agora escolha o sabor da sua pizza</Title>
